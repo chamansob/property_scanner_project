@@ -26,7 +26,7 @@
                                         <th>ID</th>
                                         <th>Pay by</th>
                                         <th>Plan Name</th>
-                                        <th>Type</th>
+                                        <th>Validity</th>
                                         <th>Properties</th>
                                         <th>Amount</th>
                                         <th>Discount</th>
@@ -35,15 +35,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>                                  
-                                    @foreach ($packagehistory as $packplan)                                    
+                                    @foreach ($packagehistory as $packplan) 
+                                     @php
+                                        $validity= $packplan->plan->plan_validity >  30 ? 'danger' : 'primary';
+                                        $validity= $packplan->plan->plan_validity==0 ? 'success' : $validity;
+                                    @endphp                                   
                                         <tr>
                                             <td>{{ $packplan->id }} </td>
                                              <td><span class="badge rounded-pill border border-{{ ($packplan->order_by=='admin')?'danger':'warning' }} text-{{ ($packplan->order_by=='admin')?'danger':'warning' }}">{{ ucfirst($packplan->order_by) }}</span></td>
                                             <td><span
                                                     class="badge bg-{{ PACK[$packplan->plan?->id? $packplan->plan?->id : 0] }}">{{ ucfirst($packplan->package_name) }}</span>
                                             </td>
-                                            <td><span
-                                                    class="badge rounded-pill bg-{{ $packplan->plan->plan_type == 1 ? 'success' : 'primary' }}">{{ PLANTYPE[$packplan->plan->plan_type] }}</span>
+                                           <td><span
+                                                    class="badge rounded-pill bg-{{ $validity }}">{{ $packplan->plan->plan_validity}}</span>
                                             </td>
                                             <td>{{ ucfirst($packplan->package_credits) }}</td>
                                             <td>$ {{ ucfirst($packplan->package_amount) }}</td>

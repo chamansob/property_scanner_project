@@ -22,7 +22,7 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Type</th>
+                                        <th>Days</th>
                                         <th>Name</th>
                                         <th>Discount(%)</th>
                                         <th>Properties</th>
@@ -34,10 +34,14 @@
                                 <tbody>
                                    
                                     @foreach ($plans as $plan)
+                                    @php
+                                        $validity= $plan->plan_validity >  30 ? 'danger' : 'primary';
+                                        $validity= $plan->plan_validity==0 ? 'success' : $validity;
+                                    @endphp
                                         <tr>
                                             <td>{{ $plan->id }}</td>
                                             <td><span
-                                                    class="badge rounded-pill bg-{{ $plan->plan_type == 1 ? 'success' : 'primary' }}">{{ PLANTYPE[$plan->plan_type] }}</span>
+                                                    class="badge rounded-pill bg-{{ $validity }}">{{ $plan->plan_validity }}</span>
                                             </td>
                                             <td><i data-feather="{{ $plan->plan_icon }}"
                                                     class="icon-md text-success me-2"></i> <span

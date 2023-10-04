@@ -231,7 +231,7 @@
                                         <th>ID</th>
                                         <th>Pay by</th>
                                         <th>Plan Name</th>
-                                        <th>Type</th>
+                                        <th>Validity</th>
                                         <th>Properties</th>
                                         <th>Amount</th>
                                         <th>Discount</th>
@@ -240,7 +240,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>                                  
-                                    @foreach ($agent->packagehistory as $packplan)                                    
+                                    @foreach ($agent->packagehistory as $packplan)   
+                                    @php
+                                        $validity= $packplan->plan->plan_validity >  30 ? 'danger' : 'primary';
+                                        $validity= $packplan->plan->plan_validity==0 ? 'success' : $validity;
+                                    @endphp                                 
                                         <tr>
                                             <td>{{ $packplan->id }} </td>
                                              <td><span class="badge rounded-pill border border-{{ ($packplan->order_by=='admin')?'danger':'warning' }} text-{{ ($packplan->order_by=='admin')?'danger':'warning' }}">{{ ucfirst($packplan->order_by) }}</span></td>
@@ -248,11 +252,11 @@
                                                     class="badge bg-{{ PACK[$packplan->plan?->id? $packplan->plan?->id : 0] }}">{{ ucfirst($packplan->package_name) }}</span>
                                             </td>
                                             <td><span
-                                                    class="badge rounded-pill bg-{{ $packplan->plan->plan_type == 1 ? 'success' : 'primary' }}">{{ PLANTYPE[$packplan->plan->plan_type] }}</span>
+                                                    class="badge rounded-pill bg-{{ $validity }}">{{ $packplan->plan->plan_validity}}</span>
                                             </td>
                                             <td>{{ ucfirst($packplan->package_credits) }}</td>
-                                            <td>$ {{ ucfirst($packplan->package_amount) }}</td>
-                                            <td>$ {{ ucfirst($packplan->package_discount) }}</td>
+                                            <td>{{ EXSSYMBOL }} {{ ucfirst($packplan->package_amount) }}</td>
+                                            <td>{{ EXSSYMBOL }} {{ ucfirst($packplan->package_discount) }}</td>
                                             <td>{{ $packplan->created_at->format('l d M Y') }}</td>
 
                                             <td>

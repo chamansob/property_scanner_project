@@ -45,7 +45,7 @@ class PlanController extends Controller
             'plan_pack_id' => 'required',
             'plan_amount' => 'required',
         ]);
-        if ($request->plan_type == 2) {
+        if ($request->plan_validity == 2) {
             $plan_discount=0;
         } else {
             $plan_discount = $request->plan_discount;
@@ -60,7 +60,7 @@ class PlanController extends Controller
             'plan_credit' => $request->plan_credit,
             'plan_credit' => $request->plan_credit,
             'plan_discount' => $plan_discount,
-            'plan_type' => $request->plan_type,
+            'plan_validity' => $request->plan_validity,
         ]);
         $notification = array(
             'message' => 'Property Plan Create Successfully',
@@ -94,7 +94,7 @@ class PlanController extends Controller
     {
         $plan_features = $request->plan_pack_id;
         $plan_feature_all = implode(",", $plan_features);
-        if ($request->plan_type == 2) {
+        if ($request->plan_validity == 2) {
             $plan_discount = 0;
         } else {
             $plan_discount = $request->plan_discount;
@@ -118,7 +118,7 @@ class PlanController extends Controller
             'plan_credit' => $request->plan_credit,
             'plan_color' => $request->plan_color,           
             'plan_discount' =>  $plan_discount,
-            'plan_type' => $request->plan_type,
+            'plan_validity' => $request->plan_validity,
         ]);
         $notification = array(
             'message' => 'Property Plan Updated Successfully',

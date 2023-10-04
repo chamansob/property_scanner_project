@@ -26,7 +26,7 @@
                                         <th>Pay by</th>
                                         <th>Photo</th>
                                         <th>Agent Name</th>
-                                        <th>Name</th>
+                                        <th>Package</th>
                                         <th>Properites</th>
                                         <th>Amount</th>
                                         <th>Discount</th>
@@ -45,7 +45,7 @@
                                             <td>{{ ucfirst($packplan->user->name) }}</td>
 
                                             <td><span
-                                                    class="badge bg-{{ PACK[$packplan->plan?->id ? $packplan->plan?->id : 0] }}">{{ ucfirst($packplan->package_name) }}</span>
+                                                    class="badge bg-{{ PACK[$packplan->plan?->id ? $packplan->plan?->id : 0] }}">{{ ucfirst($packplan->package_name)."-(".$packplan->plan->plan_validity." Days)" }}</span>
                                             </td>
                                             <td>{{ ucfirst($packplan->package_credits) }}</td>
                                             <td>$ {{ ucfirst($packplan->package_amount) }}</td>

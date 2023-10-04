@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified', 'roles:agent'])->prefix('agent')->group(f
         Route::patch('/properties/facility_update/{property}', 'facilityUpdate')->name('agent.properties.facility_update');
         Route::get('/properties/facility_delete/{id}', 'facilityDestory')->name('agent.properties.facility_delete');
         Route::patch('/properties/status/{property}', 'StatusUpdate')->name('property.status');
+        Route::get('/property/ajax_load', 'Ajax_Load')->name('agent.property.ajax_load');
         // Agent Property Messsage Route from dashboard
         Route::get('/property/message/', 'AgentPropertyMessage')->name('agent.property.message');
         Route::get('/message/details/{id}', 'AgentMessageDetails')->name('agent.message.details');

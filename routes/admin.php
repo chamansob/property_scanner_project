@@ -1,12 +1,29 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+
+use App\Http\Controllers\Backend\AmenitiesController;
+use App\Http\Controllers\Backend\BlogCategoryController;
+use App\Http\Controllers\Backend\BlogController;
+use App\Http\Controllers\Backend\BlogTagController;
+use App\Http\Controllers\Backend\CityController;
+use App\Http\Controllers\Backend\NeighborhoodcityController;
+use App\Http\Controllers\Backend\CountryController;
+use App\Http\Controllers\Backend\FacilitiesController;
 use App\Http\Controllers\Backend\ImagePresetController;
 use App\Http\Controllers\Backend\PlanController;
 use App\Http\Controllers\Backend\PlanFeaturesController;
 use App\Http\Controllers\Backend\PropertyController;
 use App\Http\Controllers\Backend\PropertyTypeController;
+use App\Http\Controllers\Backend\PropertysizeController;
+use App\Http\Controllers\Backend\StateController;
+use App\Http\Controllers\Backend\TestimonialController;
+use App\Http\Controllers\Backend\RoleController;
+use App\Http\Controllers\Backend\UserRoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Backend\SettingController;
 use Illuminate\Support\Facades\Route;
+
 
 
 // Admin Group Middleware
@@ -73,7 +90,7 @@ Route::middleware(['auth', 'roles:admin'])->prefix('admin')->group(function () {
         // Agent Property Messsage Route from dashboard
         Route::get('/property/message/', 'AdminPropertyMessage')->name('admin.property.message');
         Route::get('/message/details/{id}', 'AdminMessageDetails')->name('admin.message.details');
-        Route::get('/property/ajax_load', 'Ajax_Load')->name('property.ajax_load');
+        Route::get('/property/ajax_load', 'Ajax_Load')->name('admin.property.ajax_load');
     });
     //
     // Property Testimonial  All Routes

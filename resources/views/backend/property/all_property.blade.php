@@ -50,7 +50,7 @@
             $('#property_ajax').DataTable({
                 "processing": true,
                 "serverSide": true,
-                "ajax": "{{ route('property.ajax_load') }}",
+                "ajax": "{{ route('admin.property.ajax_load') }}",
                 "drawCallback": function( settings ) {
         feather.replace();
          $('.toggle-class').bootstrapToggle();
@@ -124,65 +124,7 @@
                 ]
             });
         });
-        $(function() {
-            $('.toggle-class').change(function()
-            {
-               
-                var status = $(this).prop('checked') == true ? 1 : 0;
-                var property_id = $(this).data('id');
-                var crf = '{{ csrf_token() }}';
-                
-                $.ajax({
-                    type: "PATCH",
-                    dataType: "json",
-                    url: '{{ route('properties.status', 'property_id') }}',
-                    data: {
-                        _token: crf,
-                        'status': status,
-                        'property_id': property_id
-                    },
-                    success: function(data) {
-                        // console.log(data.success)
-                        // Start Message 
-                        if (status == 1) {
-                            $('#currentStatus' + property_id).html('')
-                            $('#currentStatus' + property_id).html(
-                                '<span class="badge rounded-pill bg-success">Active</span>'
-                            )
-
-                        }
-                        if (status == 0) {
-
-                            $('#currentStatus' + property_id).html('')
-                            $('#currentStatus' + property_id).html(
-                                '<span class="badge rounded-pill bg-danger">Deactive</span>'
-                            )
-                        }
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            icon: 'success',
-                            showConfirmButton: false,
-                            timer: 3000
-                        })
-                        if ($.isEmptyObject(data.error)) {
-
-                            Toast.fire({
-                                type: 'success',
-                                title: data.success,
-                            })
-                        } else {
-
-                            Toast.fire({
-                                type: 'error',
-                                title: data.error,
-                            })
-                        }
-                        // End Message   
-                    }
-                });
-            })
-        })
+       
     </script>
     @endif
 </x-backend-layout>

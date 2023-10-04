@@ -135,10 +135,11 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">                               
-                                <div class="mb-3">
-                                    {!! Form::label('plan_type', 'Plan Type', ['class' => 'form-label']) !!}
-                                    {!! Form::select('plan_type', PLANTYPE, null, [
+                                <div class="mb-3">                                   
+                                     {!! Form::label('plan_validity', 'Plan Validity in Days', ['class' => 'form-label']) !!}
+                                    {!! Form::number('plan_validity', null, [
                                         'class' => 'form-control',
+                                        'placeholder' => 'Plan Validity in Days',
                                     ]) !!}
                                 </div><!-- Col -->
                             </div>

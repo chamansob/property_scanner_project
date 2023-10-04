@@ -28,6 +28,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
+use DataTables;
 
 class AgentPropertyController extends Controller
 {
@@ -572,5 +573,70 @@ class AgentPropertyController extends Controller
         ]);
 
         return response()->json(['success' => 'Status changed Successfully']);
+    }
+    public function Ajax_Load(Request $request, Property $property)
+    {
+
+        
+        $query = Property::select('id', 'ptype_id', 'property_name', 'property_slug', 'property_code', 'property_status', 'property_thumbnail', 'city_id', 'agent_id', 'status', 'created_at', 'updated_at')->where('agent_id', Auth::user()->id)->get();
+
+        return DataTables::of($query)
+            ->addColumn('image', function (Property $property) {
+                $img = explode('.', $property->property_thumbnail);
+                $table_img = $img[0] . '_small.' . $img[1];
+                return  '<img src="' . asset($table_img) . '">';
+            })            
+            ->addColumn('info', function (Property $property) {
+                $pname = ucfirst($property->property_name);
+                $code  = $property->property_code;
+                $type = $property->type->type_name;
+                $pstatus = ucfirst($property->property_status);
+                $city = $property->city?->name;
+                $created_at = $property->created_at->format('d-m-Y g:i A ');
+                $updated_at = $property->updated_at->format('d-m-Y g:i A ');
+                return  '<strong class="text-primary">Name:</strong>' . $pname . '<br>
+                    <strong class="text-info">Code:</strong>' . $code . '<br>
+                    <strong class="text-warning">Type:</strong>:' . $type . '<br>
+                    <strong class="text-danger">Status Type:</strong>' . $pstatus . '<br>
+                    <strong class="text-primary">City:</strong>' . $city . '<br>
+                    <strong class="text-secondary">Created:</strong>' . $created_at . '<br>
+                    <strong class="text-secondary">Updated:</strong>' . $updated_at . '';
+            })
+            ->addColumn('status', function (Property $property) {
+                $btn = $property->status == 0 ? 'danger' : 'success';
+                $status = $property->status == 0 ? 'Deactive' : 'Active';
+                return  '<a href="#" id="currentStatus' . $property->id . '"><span
+                                                        class="badge rounded-pill bg-' . $btn . '">' . $status . '</span></a>';
+            })
+            ->addColumn('change', function (Property $property) {
+                $checked = $property->status == 1 ? 'checked' : '';
+                return  '<input data-id="' . $property->id . '" class="toggle-class" type="checkbox"
+                                                    data-onstyle="success" data-offstyle="danger" data-toggle="toggle"
+                                                    data-on="Active" data-off="Deactive"
+                                                    ' . $checked . '>';
+            })
+            ->addColumn('action', function (Property $property) {
+                $url = url('property/details/' . $property->id . '/' . $property->property_slug);
+                $show = route('properties.show', $property->id);
+                $x =     \Collective\Html\FormFacade::open([
+                    'method' => 'delete',
+                    'route' => ['agent.properties.destroy', $property->id],
+                    'class' => 'forms-sample',
+                ]);
+                $x .= '<a href="' . $url . '" class="btn btn-inverse-info me-2" title="Public View"  target="_blank"> <i
+                                                            data-feather="eye"></i> </a>';
+
+                $x .= '<a href="' .  $show . '"
+                                                        class="btn btn-inverse-info me-2" title="List View"> <i
+                                                            data-feather="monitor"></i> </a>';
+                $x .= '<a href="' . route('agent.properties.edit', $property->id) . '" class="btn btn-inverse-warning me-2"><i data-feather="edit"></i></a>';
+                $x .= '<button type="submit" class="btn btn-inverse-danger btn-submit"><i
+                                                            data-feather="trash-2"></i></button>';
+                $x .=  \Collective\Html\FormFacade::close();
+                return $x;
+            })
+
+            ->rawColumns(['image', 'uploadby', 'info', 'status', 'change', 'action'])
+            ->make(true);
     }
 }
